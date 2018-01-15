@@ -1,7 +1,7 @@
 {
   "name": "react-interactive-list",
   "version": "0.1.0",
-  "description": "An interactive, dynamic list of components with add / remove buttons",
+  "description": "An interactive, dynamic list of components with add / remove actions",
   "author": "afeiship <1290657123@qq.com>",
   "keywords": [
     "components",
