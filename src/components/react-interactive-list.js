@@ -45,19 +45,19 @@ export default class extends Component {
   render(){
     const { className, template, value, ...props } = this.props;
     return (
-      <div {...props} className={classNames('react-interactive-list',className)}>
+      <div {...props} className={classNames('react-interactive-list',className)} data-role='list'>
         {
           value.map((item,index)=>{
             return (
-              <div className="react-interactive-item" key={index}>
+              <div className="react-interactive-item" key={index} data-role='item'>
                 { template(item,index) }
-                <button className="react-interactive-remove" onClick={this._onRemove.bind( this, index )}>X</button>
+                <button className="react-interactive-remove" onClick={this._onRemove.bind( this, index )} data-role='action-remove'>X</button>
               </div>
             );
           })
         }
 
-        <button className="react-interactive-add" onClick={this._onAdd}> +Add </button>
+        <button className="react-interactive-add" onClick={this._onAdd} data-role='action-add'> +Add </button>
       </div>
     );
   }
