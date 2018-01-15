@@ -10,6 +10,8 @@ export default class extends Component {
   static propTypes = {
     className : PropTypes.string,
     template : PropTypes.func,
+    templateAdd: PropTypes.func,
+    templateRemove: PropTypes.func,
     value : PropTypes.array,
     onChange : PropTypes.func,
     defaultValue : PropTypes.any,
@@ -19,6 +21,8 @@ export default class extends Component {
 
   static defaultProps = {
     template: noop,
+    templateAdd: noop,
+    templateRemove: noop,
     value: [],
     onChange: noop,
     min: 1,
@@ -26,24 +30,29 @@ export default class extends Component {
   };
   /*===properties end===*/
 
-  _onRemove = e => {
-    const { min, value ,onChange } = this.props;
-    if( value.length > min){
-      value.splice( e, 1 );
-      onChange({ target: { value: value }});
-    }
-  };
+  get boundary(){
+    const { min, max, value } = this.props;
+    const length = value.length;
+    return length >= max || length <= min;
+  }
 
-  _onAdd = e => {
-    const { max, value, onChange, defaultValue } = this.props;
-    if( value.length < max ){
-      value.push( defaultValue );
-      onChange({ target: { value }});
+  change(inAction, inIndex ){
+    const { min, max, value, onChange, defaultValue } = this.props;
+    const length = value.length;
+    switch( inAction ){
+      case 'add':
+        ( length < max ) && value.push( defaultValue );
+        break;
+
+      case 'remove':
+        ( length > min ) && value.splice( inIndex, 1 );
+        break;
     }
-  };
+    onChange({ target: { value }});
+  }
 
   render(){
-    const { className, template, value, ...props } = this.props;
+    const { className, template, templateAdd, templateRemove, value, ...props } = this.props;
     return (
       <div {...props} className={classNames('react-interactive-list',className)} data-role='list'>
         {
@@ -51,13 +60,12 @@ export default class extends Component {
             return (
               <div className="react-interactive-item" key={index} data-role='item'>
                 { template(item,index) }
-                <button className="react-interactive-remove" onClick={this._onRemove.bind( this, index )} data-role='action-remove'>X</button>
+                { templateRemove(index) || <button className="react-interactive-remove" onClick={this.change.bind( this, 'remove' ,index )} data-role='action-remove'>X</button>}
               </div>
             );
           })
         }
-
-        <button className="react-interactive-add" onClick={this._onAdd} data-role='action-add'> +Add </button>
+        { templateAdd(this) || <button className="react-interactive-add" onClick={this.change.bind(this,'add',-1)} data-role='action-add'> +Add </button>}
       </div>
     );
   }
