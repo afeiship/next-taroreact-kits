@@ -60,7 +60,7 @@ export default class extends Component {
             return (
               <div className="react-interactive-item" key={index} data-role='item'>
                 { template(item,index) }
-                { templateRemove(index) || <button className="react-interactive-remove" onClick={this.change.bind( this, 'remove' ,index )} data-role='action-remove'>X</button>}
+                { templateRemove(this, index) || <button className="react-interactive-remove" onClick={this.change.bind( this, 'remove' ,index )} data-role='action-remove'>X</button>}
               </div>
             );
           })
