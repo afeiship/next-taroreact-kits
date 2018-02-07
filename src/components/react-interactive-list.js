@@ -39,9 +39,10 @@ export default class extends Component {
   change(inAction, inIndex ){
     const { min, max, value, onChange, defaultValue } = this.props;
     const length = value.length;
+    const _defaultValue = typeof defaultValue == 'function' ? defaultValue() : defaultValue;
     switch( inAction ){
       case 'add':
-        ( length < max ) && value.push( defaultValue );
+        ( length < max ) && value.push( _defaultValue );
         break;
 
       case 'remove':
