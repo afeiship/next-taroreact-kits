@@ -8,6 +8,8 @@
   static propTypes = {
     className : PropTypes.string,
     template : PropTypes.func,
+    templateAdd: PropTypes.func,
+    templateAside: PropTypes.func,
     value : PropTypes.array,
     onChange : PropTypes.func,
     defaultValue : PropTypes.any,
@@ -17,6 +19,8 @@
 
   static defaultProps = {
     template: noop,
+    templateAdd: noop,
+    templateAside: noop,
     value: [],
     onChange: noop,
     min: 1,
@@ -55,6 +59,14 @@ class App extends React.Component{
     );
   };
 
+  _templateRemove = (index) =>{
+    return <button className="react-interactive-remove" onClick={this._onRemove.bind( this, index )} data-role='action-remove'>X</button>
+  };
+
+  _templateAdd = () => {
+    return <button className="react-interactive-add" onClick={this._onAdd} data-role='action-add'> +Add </button>;
+  };
+
   _onChange = e =>{
     const { value } = e.target;
     this.setState({ value });
@@ -64,7 +76,11 @@ class App extends React.Component{
     const { value, defaultValue } = this.state;
     return (
       <div className="hello-react-interactive-list">
-        <ReactInteractiveList defaultValue={defaultValue} max={5} template={this._tempate} onChange={this._onChange} value={ value } ref='rc' />
+        <ReactInteractiveList
+          defaultValue={defaultValue}
+          template={this._tempate}
+          max={5}
+          onChange={this._onChange} value={ value } ref='rc' />
       </div>
     );
   }
