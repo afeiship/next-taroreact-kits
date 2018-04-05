@@ -59,12 +59,12 @@ class App extends React.Component{
     );
   };
 
-  _templateRemove = (index) =>{
-    return <button className="react-interactive-remove" onClick={this._onRemove.bind( this, index )} data-role='action-remove'>X</button>
+  _templateAside = (inContext, inIndex) =>{
+    return <button className="react-interactive-remove" onClick={inContext.change.bind( inContext, 'remove',inIndex )} data-role='action-remove'>X</button>
   };
 
-  _templateAdd = () => {
-    return <button className="react-interactive-add" onClick={this._onAdd} data-role='action-add'> +Add </button>;
+  _templateAdd = (inContext) => {
+    return <button className="react-interactive-add" onClick={inContext.change.bind(inContext,'add')} data-role='action-add'> +Add </button>;
   };
 
   _onChange = e =>{
@@ -79,6 +79,7 @@ class App extends React.Component{
         <ReactInteractiveList
           defaultValue={defaultValue}
           template={this._tempate}
+          templateAside={this._templateAside}
           max={5}
           onChange={this._onChange} value={ value } ref='rc' />
       </div>
