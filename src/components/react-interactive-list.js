@@ -11,7 +11,6 @@ export default class extends Component {
     className : PropTypes.string,
     template : PropTypes.func,
     templateAdd: PropTypes.func,
-    templateAside: PropTypes.func,
     value : PropTypes.array,
     onChange : PropTypes.func,
     defaultValue : PropTypes.any,
@@ -22,7 +21,6 @@ export default class extends Component {
   static defaultProps = {
     template: noop,
     templateAdd: noop,
-    templateAside: noop,
     value: [],
     onChange: noop,
     min: 1,
@@ -53,15 +51,14 @@ export default class extends Component {
   }
 
   render(){
-    const { className, template, templateAdd, templateAside, value, ...props } = this.props;
+    const { className, template, templateAdd, value, ...props } = this.props;
     return (
       <div {...props} className={classNames('react-interactive-list',className)} data-role='list'>
         {
           value.map((item,index)=>{
             return (
               <div className="react-interactive-item" key={index} data-role='item'>
-                { template(item,index) }
-                { templateAside(this, index) || <button className="react-interactive-remove" onClick={this.change.bind( this, 'remove' ,index )} data-role='action-remove'>X</button>}
+                { template(this, item,index) }
               </div>
             );
           })
