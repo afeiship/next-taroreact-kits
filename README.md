@@ -9,7 +9,6 @@
     className : PropTypes.string,
     template : PropTypes.func,
     templateAdd: PropTypes.func,
-    templateAside: PropTypes.func,
     value : PropTypes.array,
     onChange : PropTypes.func,
     defaultValue : PropTypes.any,
@@ -20,7 +19,6 @@
   static defaultProps = {
     template: noop,
     templateAdd: noop,
-    templateAside: noop,
     value: [],
     onChange: noop,
     min: 1,
@@ -53,13 +51,16 @@ class App extends React.Component{
     window.rc = this.refs.rc;
   }
 
-  _tempate = (item,index) => {
+  _tempate = (inContext, inItem, inIndex) => {
     return (
-      <div className="item" key={index}> {item} </div>
+      <div className="item" key={inIndex}>
+        {inItem}
+        {this._btnRemove(inContext, inIndex )}
+      </div>
     );
   };
 
-  _templateAside = (inContext, inIndex) =>{
+  _btnRemove = (inContext, inIndex) =>{
     return <button className="react-interactive-remove" onClick={inContext.change.bind( inContext, 'remove',inIndex )} data-role='action-remove'>X</button>
   };
 
@@ -79,7 +80,6 @@ class App extends React.Component{
         <ReactInteractiveList
           defaultValue={defaultValue}
           template={this._tempate}
-          templateAside={this._templateAside}
           max={5}
           onChange={this._onChange} value={ value } ref='rc' />
       </div>
