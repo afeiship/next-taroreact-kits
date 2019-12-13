@@ -1,90 +1,83 @@
 # react-interactive-list
 > An interactive, dynamic list of components with add / remove actions.
 
-
-## properties:
-```javascript
-
-  static propTypes = {
-    className : PropTypes.string,
-    template : PropTypes.func,
-    templateAdd: PropTypes.func,
-    value : PropTypes.array,
-    onChange : PropTypes.func,
-    defaultValue : PropTypes.any,
-    min: PropTypes.number,
-    max: PropTypes.number,
-  };
-
-  static defaultProps = {
-    template: noop,
-    templateAdd: noop,
-    value: [],
-    onChange: noop,
-    min: 1,
-    max: 100
-  };
-  
+## installation
+```shell
+npm install -S @feizheng/react-interactive-list
 ```
+## properties
+| property       | type | description |
+| -------------- | ---- | ----------- |
+| className      | -    | -           |
+| min            | -    | -           |
+| max            | -    | -           |
+| items          | -    | -           |
+| template       | -    | -           |
+| templateDelete | -    | -           |
+| templateCreate | -    | -           |
+| templateDefalt | -    | -           |
+| onChange       | -    | -           |
 
-## usage:
-```jsx
+## usage
+1. import css
+  ```scss
+  @import "~@feizheng/react-interactive-list/dist/style.scss";
 
-// install: npm install afeiship/react-interactive-list --save
-// import : import ReactInteractiveList from 'react-interactive-list'
+  // customize your styles:
+  $react-interactive-list-options: ()
+  ```
+2. import js
+  ```js
+  import ReactInteractiveList from '../src/main';
+  import ReactDOM from 'react-dom';
+  import React from 'react';
+  import './assets/style.scss';
 
-class App extends React.Component{
-  state = {
-    defaultValue: 'text-empty',
-    value:[
-      'text1',
-      'text2',
-      'text3',
-      'text4'
-    ]
-  };
+  class App extends React.Component {
+    state = {
+      items: [
+        'value1',
+        'value2',
+        'value3',
+        'value4',
+      ]
+    }
 
-  constructor(props) {
-    super(props);
-    window.demo = this;
-    window.refs = this.refs;
-    window.rc = this.refs.rc;
+    template = ({ item, index }, cb) => {
+      return <div className="is-item" key={index}>{item} <button onClick={cb}>Remove</button></div>
+    };
+
+    templateCreate = ({ items }, cb) => {
+      return <button className="button" onClick={cb}>Add</button>
+    };
+
+    templateDefault = () => {
+      return 'A new template'
+    }
+
+    onChange = (inEvent) => {
+      console.log('change:', inEvent.target.value);
+    }
+
+    render() {
+      const { items } = this.state;
+      return (
+        <div className="app-container">
+          <ReactInteractiveList
+            items={items}
+            template={this.template}
+            templateDefault={this.templateDefault}
+            templateCreate={this.templateCreate}
+            onChange={this.onChange}
+          />
+        </div>
+      );
+    }
   }
 
-  _tempate = (inContext, inItem, inIndex) => {
-    return (
-      <div className="item" key={inIndex}>
-        {inItem}
-        {this._btnRemove(inContext, inIndex )}
-      </div>
-    );
-  };
+  ReactDOM.render(<App />, document.getElementById('app'));
 
-  _btnRemove = (inContext, inIndex) =>{
-    return <button className="react-interactive-remove" onClick={inContext.change.bind( inContext, 'remove',inIndex )} data-role='action-remove'>X</button>
-  };
+  ```
 
-  _templateAdd = (inContext) => {
-    return <button className="react-interactive-add" onClick={inContext.change.bind(inContext,'add')} data-role='action-add'> +Add </button>;
-  };
-
-  _onChange = e =>{
-    const { value } = e.target;
-    this.setState({ value });
-  };
-
-  render(){
-    const { value, defaultValue } = this.state;
-    return (
-      <div className="hello-react-interactive-list">
-        <ReactInteractiveList
-          defaultValue={defaultValue}
-          template={this._tempate}
-          max={5}
-          onChange={this._onChange} value={ value } ref='rc' />
-      </div>
-    );
-  }
-}
-
-```
+## documentation
+- https://afeiship.github.io/react-interactive-list/

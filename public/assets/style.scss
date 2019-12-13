@@ -1,0 +1,57 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+html,
+body,
+#app,
+.app-container {
+  height: 100%;
+}
+
+@import "@/components/style.scss";
+
+.app-container {
+  padding: 50px;
+  .react-list {
+    padding: 20px;
+    background: #fefefe;
+    border: 4px dashed #ccc;
+    margin-bottom: 20px;
+
+    &:hover{
+      border-color: #ddd;
+    }
+  }
+
+  .is-item {
+    padding: 0 10px;
+    line-height: 32px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &:hover{
+      background: #eee;
+    }
+  }
+  .button {
+    background: #3cc51f;
+    width: 100%;
+    display: block;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    color: #fff;
+    padding: 20px;
+    border: none;
+
+    &:active {
+      background: darken(#3cc51f, 10%);
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+}

@@ -1,2 +1,2 @@
-import ReactInteractiveList from 'components/react-interactive-list';
+import ReactInteractiveList from './components';
 export default ReactInteractiveList;
