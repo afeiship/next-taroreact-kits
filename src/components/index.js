@@ -104,6 +104,8 @@ export default class extends Component {
   render() {
     const {
       className,
+      min,
+      max,
       items,
       template,
       templateCreate,

@@ -1,6 +1,6 @@
 {
   "name": "@feizheng/react-interactive-list",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "An interactive, dynamic list of components with add / remove actions.",
   "main": "dist/index.js",
   "scripts": {
