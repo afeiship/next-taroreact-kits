@@ -17,6 +17,7 @@ npm install -S @feizheng/react-interactive-list
 | templateCreate | -    | -           |
 | templateDefalt | -    | -           |
 | onChange       | -    | -           |
+| onValidate     | -    | -           |
 
 ## usage
 1. import css
@@ -35,29 +36,36 @@ npm install -S @feizheng/react-interactive-list
 
   class App extends React.Component {
     state = {
-      items: [
-        'value1',
-        'value2',
-        'value3',
-        'value4',
-      ]
-    }
+      items: ['value1', 'value2', 'value3', 'value4']
+    };
 
     template = ({ item, index }, cb) => {
-      return <div className="is-item" key={index}>{item} <button onClick={cb}>Remove</button></div>
+      return (
+        <div className="is-item" key={index}>
+          {index + 1}:{item} <button onClick={cb}>Remove</button>
+        </div>
+      );
     };
 
     templateCreate = ({ items }, cb) => {
-      return <button className="button" onClick={cb}>Add</button>
+      return (
+        <button className="button" onClick={cb}>
+          Add
+        </button>
+      );
     };
 
     templateDefault = () => {
-      return 'A new template'
-    }
+      return 'A new template';
+    };
 
     onChange = (inEvent) => {
       console.log('change:', inEvent.target.value);
-    }
+    };
+
+    onValidate = (inEvent) => {
+      console.log('validate:', inEvent.target.value);
+    };
 
     render() {
       const { items } = this.state;
@@ -69,6 +77,7 @@ npm install -S @feizheng/react-interactive-list
             templateDefault={this.templateDefault}
             templateCreate={this.templateCreate}
             onChange={this.onChange}
+            onValidate={this.onValidate}
           />
         </div>
       );
@@ -76,7 +85,6 @@ npm install -S @feizheng/react-interactive-list
   }
 
   ReactDOM.render(<App />, document.getElementById('app'));
-
   ```
 
 ## documentation

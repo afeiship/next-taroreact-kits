@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import noop from '@feizheng/noop';
-import objectAssign from 'object-assign';
 import ReactList from '@feizheng/react-list';
 
 const CLASS_NAME = 'react-interactive-list';
@@ -19,7 +18,8 @@ export default class extends Component {
     templateDelete: PropTypes.func,
     templateCreate: PropTypes.func,
     templateDefault: PropTypes.func,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    onValidate: PropTypes.func
   };
 
   static defaultProps = {
@@ -30,7 +30,8 @@ export default class extends Component {
     templateDelete: noop,
     templateCreate: noop,
     templateDefault: noop,
-    onChange: noop
+    onChange: noop,
+    onValidate: noop
   };
 
   static getDerivedStateFromProps(inProps, inState) {
@@ -41,16 +42,19 @@ export default class extends Component {
     return null;
   }
 
-  get isLtMin() {
-    const { min } = this.props;
+  get length() {
     const { value } = this.state;
-    return value.length <= min;
+    return value.length;
   }
 
-  get isGtMax() {
+  get isLteMin() {
+    const { min } = this.props;
+    return this.length <= min;
+  }
+
+  get isGteMax() {
     const { max } = this.props;
-    const { value } = this.state;
-    return value.length >= max;
+    return this.length >= max;
   }
 
   get listView() {
@@ -62,8 +66,8 @@ export default class extends Component {
     const { value } = this.state;
     const { templateCreate, templateDefault } = this.props;
     const cb = () => {
-      if (this.isGtMax) return;
-      value.push(templateDefault())
+      if (this.isGteMax) return;
+      value.push(templateDefault());
       this.change(value);
     };
     return templateCreate({ items: value }, cb);
@@ -80,7 +84,7 @@ export default class extends Component {
     const { template } = this.props;
     const { value } = this.state;
     const cb = () => {
-      if (this.isLtMin) return;
+      if (this.isLteMin) return;
       value.splice(index, 1);
       this.change(value);
     };
@@ -88,15 +92,27 @@ export default class extends Component {
   };
 
   change(inValue) {
-    const { onChange } = this.props;
+    const { onChange, onValidate, min, max } = this.props;
     const target = { value: inValue };
     this.setState(target, () => {
       onChange({ target });
+      this.length === min && onValidate({ target: { value: 'EQ_MIN' } });
+      this.length === max && onValidate({ target: { value: 'EQ_MAX' } });
     });
   }
 
   render() {
-    const { className, items, template, templateCreate, templateDelete, templateDefault, ...props } = this.props;
+    const {
+      className,
+      items,
+      template,
+      templateCreate,
+      templateDelete,
+      templateDefault,
+      onChange,
+      onValidate,
+      ...props
+    } = this.props;
     return (
       <div
         data-component={CLASS_NAME}
