@@ -74,7 +74,7 @@ export default class extends Component {
 
   shouldComponentUpdate(inProps) {
     const { items } = inProps;
-    if (items !== this.state.vaule) {
+    if (items !== this.state.value) {
       this.setState({ value: items });
     }
     return true;
