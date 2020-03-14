@@ -36,10 +36,16 @@ class App extends React.Component {
     console.log('validate:', inEvent.target.value);
   };
 
+  onClickRadom = (inEvent) => {
+    const random = Math.floor(Math.random() * 8);
+    this.setState({ items: [1, 2, 3, 4, 5, 6, 7, 8].slice(0, random) });
+  };
+
   render() {
     const { items } = this.state;
     return (
       <div className="app-container">
+        <button onClick={this.onClickRadom}>Set Random Items</button>
         <ReactInteractiveList
           items={items}
           template={this.template}
