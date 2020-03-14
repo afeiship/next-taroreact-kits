@@ -34,14 +34,6 @@ export default class extends Component {
     onValidate: noop
   };
 
-  static getDerivedStateFromProps(inProps, inState) {
-    const { items } = inProps;
-    if (items !== inState.value) {
-      return { value: items };
-    }
-    return null;
-  }
-
   get length() {
     const { value } = this.state;
     return value.length;
@@ -78,6 +70,14 @@ export default class extends Component {
     this.state = {
       value: inProps.items
     };
+  }
+
+  shouldComponentUpdate(inProps) {
+    const { value } = inProps;
+    if (value !== this.state.vaule) {
+      this.setState({ value });
+    }
+    return true;
   }
 
   template = ({ item, index }) => {
