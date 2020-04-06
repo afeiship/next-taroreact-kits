@@ -45,7 +45,7 @@ class App extends React.Component {
     const { items } = this.state;
     return (
       <div className="app-container">
-        <button onClick={this.onClickRadom}>Set Random Items</button>
+        <button className="button" onClick={this.onClickRadom}>Set Random Items</button>
         <ReactInteractiveList
           items={items}
           template={this.template}

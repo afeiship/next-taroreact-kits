@@ -3,22 +3,54 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import noop from '@feizheng/noop';
+import objectAssign from 'object-assign';
 import ReactList from '@feizheng/react-list';
 
 const CLASS_NAME = 'react-interactive-list';
 
-export default class extends Component {
+export default class ReactInteractiveList extends Component {
   static displayName = CLASS_NAME;
+  static version = '__VERSION__';
   static propTypes = {
+    /**
+     * The extended className for component.
+     */
     className: PropTypes.string,
+    /**
+     * The minimum size.
+     */
     min: PropTypes.number,
+    /**
+     * The max size.
+     */
     max: PropTypes.number,
+    /**
+     * The data source.
+     */
     items: PropTypes.array,
+    /**
+     * The data item template.
+     */
     template: PropTypes.func,
+    /**
+     * The action of `delete` component.
+     */
     templateDelete: PropTypes.func,
+    /**
+     * The action of `create` component.
+     */
     templateCreate: PropTypes.func,
+    /**
+     * The empty create template.
+     */
     templateDefault: PropTypes.func,
+    /**
+     * The change handler.
+     */
     onChange: PropTypes.func,
+    /**
+     * When trigger max/min boundary.
+     */
     onValidate: PropTypes.func
   };
 

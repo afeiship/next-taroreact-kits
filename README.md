@@ -5,19 +5,26 @@
 ```shell
 npm install -S @feizheng/react-interactive-list
 ```
+
+## update
+```shell
+npm update @feizheng/react-interactive-list
+```
+
 ## properties
-| property       | type | description |
-| -------------- | ---- | ----------- |
-| className      | -    | -           |
-| min            | -    | -           |
-| max            | -    | -           |
-| items          | -    | -           |
-| template       | -    | -           |
-| templateDelete | -    | -           |
-| templateCreate | -    | -           |
-| templateDefalt | -    | -           |
-| onChange       | -    | -           |
-| onValidate     | -    | -           |
+| Name            | Type   | Required | Default | Description                           |
+| --------------- | ------ | -------- | ------- | ------------------------------------- |
+| className       | string | false    | -       | The extended className for component. |
+| min             | number | false    | 1       | The minimum size.                     |
+| max             | number | false    | 10      | The max size.                         |
+| items           | array  | false    | []      | The data source.                      |
+| template        | func   | false    | noop    | The data item template.               |
+| templateDelete  | func   | false    | noop    | The action of `delete` component.     |
+| templateCreate  | func   | false    | noop    | The action of `create` component.     |
+| templateDefault | func   | false    | noop    | The empty create template.            |
+| onChange        | func   | false    | noop    | The change handler.                   |
+| onValidate      | func   | false    | noop    | When trigger max/min boundary.        |
+
 
 ## usage
 1. import css
@@ -29,7 +36,7 @@ npm install -S @feizheng/react-interactive-list
   ```
 2. import js
   ```js
-  import ReactInteractiveList from '../src/main';
+  import ReactInteractiveList from '@feizheng/react-interactive-list';
   import ReactDOM from 'react-dom';
   import React from 'react';
   import './assets/style.scss';
@@ -67,10 +74,16 @@ npm install -S @feizheng/react-interactive-list
       console.log('validate:', inEvent.target.value);
     };
 
+    onClickRadom = (inEvent) => {
+      const random = Math.floor(Math.random() * 8);
+      this.setState({ items: [1, 2, 3, 4, 5, 6, 7, 8].slice(0, random) });
+    };
+
     render() {
       const { items } = this.state;
       return (
         <div className="app-container">
+          <button className="button" onClick={this.onClickRadom}>Set Random Items</button>
           <ReactInteractiveList
             items={items}
             template={this.template}
@@ -85,6 +98,7 @@ npm install -S @feizheng/react-interactive-list
   }
 
   ReactDOM.render(<App />, document.getElementById('app'));
+
   ```
 
 ## documentation

@@ -1,4 +1,4 @@
-import baseConfig from '.';
+import baseConfig from './base';
 import merge from 'webpack-merge';
 import {
   configs,
@@ -14,9 +14,6 @@ export default merge(baseConfig, {
   output: outputs.build({
     library: 'ReactInteractiveList'
   }),
-  externals: externals.base({
-    '@feizheng/noop': '@feizheng/noop',
-    '@feizheng/react-list': '@feizheng/react-list'
-  }),
+  externals: externals.node(),
   plugins: [plugins.clean(), plugins.copyStyles()]
 });
