@@ -1,12 +1,21 @@
-import ReactInteractiveList from '../src/main';
-import ReactDOM from 'react-dom';
+import NxOfflineSw from '@feizheng/next-offline-sw';
+import ReactGithubCorner from '@feizheng/react-github-corner';
+import ReactSwUpdateTips from '@feizheng/react-sw-update-tips';
 import React from 'react';
+import ReactDOM from 'react-dom';
+import ReactInteractiveList from '../src/main';
 import './assets/style.scss';
 
 class App extends React.Component {
-  state = {
-    items: ['value1', 'value2', 'value3', 'value4']
-  };
+  state = { hasUpdate: false, items: ['value1', 'value2', 'value3', 'value4'] };
+
+  componentDidMount() {
+    NxOfflineSw.install({
+      onUpdateReady: () => {
+        this.setState({ hasUpdate: true });
+      }
+    });
+  }
 
   template = ({ item, index }, cb) => {
     return (
@@ -43,9 +52,13 @@ class App extends React.Component {
 
   render() {
     const { items } = this.state;
+
     return (
-      <div className="app-container">
-        <button className="button" onClick={this.onClickRadom}>Set Random Items</button>
+      <div className="p-3 app-container">
+        {/* Core components usage start */}
+        <button className="button" onClick={this.onClickRadom}>
+          Set Random Items
+        </button>
         <ReactInteractiveList
           items={items}
           template={this.template}
@@ -54,6 +67,9 @@ class App extends React.Component {
           onChange={this.onChange}
           onValidate={this.onValidate}
         />
+        {/* Core components usage end */}
+        <ReactSwUpdateTips value={this.state.hasUpdate} />
+        <ReactGithubCorner value="https://github.com/afeiship/react-interactive-list" />
       </div>
     );
   }
