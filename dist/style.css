@@ -1,0 +1,5 @@
+.react-interactive-list {
+  color: red;
+  font-size: 12px; }
+  .react-interactive-list:active {
+    color: black; }

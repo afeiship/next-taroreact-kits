@@ -2,4 +2,9 @@ $react-interactive-list-options: () !default;
 
 .react-interactive-list {
   // your styles
+  color: red;
+  font-size: 12px;
+  &:active {
+    color: black;
+  }
 }
