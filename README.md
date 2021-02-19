@@ -12,11 +12,18 @@ npm install -S @jswork/react-interactive-list
 ```
 
 ## properties
-| Name      | Type   | Required | Default | Description                           |
-| --------- | ------ | -------- | ------- | ------------------------------------- |
-| className | string | false    | -       | The extended className for component. |
-| value     | object | false    | null    | The changed value.                    |
-| onChange  | func   | false    | noop    | The change handler.                   |
+| Name            | Type   | Required | Default | Description                           |
+| --------------- | ------ | -------- | ------- | ------------------------------------- |
+| className       | string | false    | -       | The extended className for component. |
+| min             | number | false    | 1       | The minimum size.                     |
+| max             | number | false    | 10      | The max size.                         |
+| items           | array  | false    | []      | The data source.                      |
+| template        | func   | false    | noop    | The data item template.               |
+| templateDelete  | func   | false    | noop    | The action of `delete` component.     |
+| templateCreate  | func   | false    | noop    | The action of `create` component.     |
+| templateDefault | func   | false    | noop    | The empty create template.            |
+| onChange        | func   | false    | noop    | The change handler.                   |
+| onValidate      | func   | false    | noop    | When trigger max/min boundary.        |
 
 
 ## usage
@@ -39,13 +46,56 @@ npm install -S @jswork/react-interactive-list
   import './assets/style.scss';
 
   class App extends React.Component {
+    state = { items: ['value1', 'value2', 'value3', 'value4'] };
+    template = ({ item, index }, cb) => {
+      return (
+        <div className="is-item py-2" key={index}>
+          {index + 1}:{item} <button className="button is-small is-danger"onClick={cb}>Remove</button>
+        </div>
+      );
+    };
+
+    templateCreate = ({ items }, cb) => {
+      return (
+        <button className="button is-info is-fullwidth" onClick={cb}>
+          Add
+        </button>
+      );
+    };
+
+    templateDefault = () => {
+      return 'A new template';
+    };
+
+    onChange = (inEvent) => {
+      console.log('change:', inEvent.target.value);
+    };
+
+    onValidate = (inEvent) => {
+      console.log('validate:', inEvent.target.value);
+    };
+
+    onClickRadom = (inEvent) => {
+      const random = Math.floor(Math.random() * 8);
+      this.setState({ items: [1, 2, 3, 4, 5, 6, 7, 8].slice(0, random) });
+    };
     render() {
+      const { items } = this.state;
       return (
         <ReactDemokit
           className="p-3 app-container"
           url="https://github.com/afeiship/react-interactive-list">
-          <ReactInteractiveList className="mb-5 has-text-white" />
-          <button className="button is-primary is-fullwidth">Start~</button>
+          <button className="button is-primary is-fullwidth mb-2" onClick={this.onClickRadom}>
+            Set Random Items
+          </button>
+          <ReactInteractiveList
+            items={items}
+            template={this.template}
+            templateDefault={this.templateDefault}
+            templateCreate={this.templateCreate}
+            onChange={this.onChange}
+            onValidate={this.onValidate}
+          />
         </ReactDemokit>
       );
     }

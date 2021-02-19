@@ -1,6 +1,6 @@
 {
   "name": "@jswork/react-interactive-list",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An interactive, dynamic list of components with add / remove actions.",
   "main": "dist/index.js",
   "scripts": {
@@ -20,17 +20,9 @@
     "url": "git+https://github.com/afeiship/react-interactive-list.git"
   },
   "keywords": [
-    "boilerplate",
     "react",
-    "component",
-    "cra",
-    "template",
-    "webpack",
-    "sass",
-    "scss",
-    "docs",
-    "service-worker",
-    "sw"
+    "interactive",
+    "list"
   ],
   "author": "afei",
   "license": "MIT",
