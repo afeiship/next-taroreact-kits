@@ -31,10 +31,6 @@ export default class ReactInteractiveList extends Component {
      */
     template: PropTypes.func,
     /**
-     * The action of `delete` component.
-     */
-    templateDelete: PropTypes.func,
-    /**
      * The action of `create` component.
      */
     templateCreate: PropTypes.func,
@@ -57,7 +53,6 @@ export default class ReactInteractiveList extends Component {
     max: 10,
     items: [],
     template: noop,
-    templateDelete: noop,
     templateCreate: noop,
     templateDefault: noop,
     onChange: noop,
@@ -90,7 +85,7 @@ export default class ReactInteractiveList extends Component {
     const cb = () => {
       if (this.isGteMax) return;
       value.push(templateDefault());
-      this.change(value);
+      this.doChange(value);
     };
     return templateCreate({ items: value }, cb);
   }
@@ -116,12 +111,12 @@ export default class ReactInteractiveList extends Component {
     const cb = () => {
       if (this.isLteMin) return;
       value.splice(index, 1);
-      this.change(value);
+      this.doChange(value);
     };
-    return template({ item, index, items: value }, cb);
+    return template({ item, index, change: this.doChange, items: value }, cb);
   };
 
-  change(inValue) {
+  doChange = (inValue) => {
     const { onChange, onValidate, min, max } = this.props;
     const target = { value: inValue };
     this.setState(target, () => {
@@ -129,7 +124,7 @@ export default class ReactInteractiveList extends Component {
       this.length === min && onValidate({ target: { value: 'EQ_MIN' } });
       this.length === max && onValidate({ target: { value: 'EQ_MAX' } });
     });
-  }
+  };
 
   render() {
     const {
@@ -139,7 +134,6 @@ export default class ReactInteractiveList extends Component {
       items,
       template,
       templateCreate,
-      templateDelete,
       templateDefault,
       onChange,
       onValidate,
@@ -156,4 +150,3 @@ export default class ReactInteractiveList extends Component {
     );
   }
 }
-

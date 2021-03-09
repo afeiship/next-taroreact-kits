@@ -19,7 +19,6 @@ npm install -S @jswork/react-interactive-list
 | max             | number | false    | 10      | The max size.                         |
 | items           | array  | false    | []      | The data source.                      |
 | template        | func   | false    | noop    | The data item template.               |
-| templateDelete  | func   | false    | noop    | The action of `delete` component.     |
 | templateCreate  | func   | false    | noop    | The action of `create` component.     |
 | templateDefault | func   | false    | noop    | The empty create template.            |
 | onChange        | func   | false    | noop    | The change handler.                   |
@@ -46,11 +45,40 @@ npm install -S @jswork/react-interactive-list
   import './assets/style.scss';
 
   class App extends React.Component {
-    state = { items: ['value1', 'value2', 'value3', 'value4'] };
-    template = ({ item, index }, cb) => {
+    state = {
+      items: [
+        this.templateDefault(),
+        this.templateDefault(),
+        this.templateDefault(),
+        this.templateDefault()
+      ]
+    };
+    template = ({ item, index, items, change }, cb) => {
+      console.log('items: ->', items);
       return (
         <div className="is-item py-2" key={index}>
-          {index + 1}:{item} <button className="button is-small is-danger"onClick={cb}>Remove</button>
+          {index + 1}:
+          <input
+            className="checkbox"
+            type="checkbox"
+            checked={item.checked}
+            onChange={(e) => {
+              items[index].checked = e.target.checked;
+              change(items);
+            }}
+          />
+          <input
+            type="text"
+            value={item.value}
+            onChange={(e) => {
+              item.value = e.target.value;
+              console.log('index/value:', index, e.target.value, items);
+              change(items);
+            }}
+          />
+          <button className="button is-small is-danger" onClick={cb}>
+            Remove
+          </button>
         </div>
       );
     };
@@ -63,12 +91,13 @@ npm install -S @jswork/react-interactive-list
       );
     };
 
-    templateDefault = () => {
-      return 'A new template';
-    };
+    templateDefault() {
+      return { checked: false, value: 'A new template' };
+    }
 
     onChange = (inEvent) => {
-      console.log('change:', inEvent.target.value);
+      const items = inEvent.target.value;
+      this.setState({ items: items });
     };
 
     onValidate = (inEvent) => {
@@ -85,7 +114,9 @@ npm install -S @jswork/react-interactive-list
         <ReactDemokit
           className="p-3 app-container"
           url="https://github.com/afeiship/react-interactive-list">
-          <button className="button is-primary is-fullwidth mb-2" onClick={this.onClickRadom}>
+          <button
+            className="button is-primary is-fullwidth mb-2"
+            onClick={this.onClickRadom}>
             Set Random Items
           </button>
           <ReactInteractiveList
