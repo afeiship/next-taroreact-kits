@@ -87,7 +87,7 @@ export default class ReactInteractiveList extends Component {
       value.push(templateDefault());
       this.doChange(value);
     };
-    return templateCreate({ items: value }, cb);
+    return templateCreate({ items: value, change: this.doChange }, cb);
   }
 
   constructor(inProps) {
