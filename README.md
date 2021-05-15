@@ -17,6 +17,7 @@ npm install -S @jswork/react-interactive-list
 | className       | string | false    | -       | The extended className for component. |
 | min             | number | false    | 1       | The minimum size.                     |
 | max             | number | false    | 10      | The max size.                         |
+| virtual         | bool   | false    | -       | If node name is React.Framgment.      |
 | items           | array  | false    | []      | The data source.                      |
 | template        | func   | false    | noop    | The data item template.               |
 | templateCreate  | func   | false    | noop    | The action of `create` component.     |
@@ -120,6 +121,7 @@ npm install -S @jswork/react-interactive-list
             Set Random Items
           </button>
           <ReactInteractiveList
+            virtual
             items={items}
             template={this.template}
             templateDefault={this.templateDefault}
