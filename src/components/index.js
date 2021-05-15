@@ -49,7 +49,11 @@ export default class ReactInteractiveList extends Component {
     /**
      * When trigger max/min boundary.
      */
-    onValidate: PropTypes.func
+    onValidate: PropTypes.func,
+    /**
+     * When list init loaded.
+     */
+    onInit: PropTypes.func
   };
 
   static defaultProps = {
@@ -60,7 +64,8 @@ export default class ReactInteractiveList extends Component {
     templateCreate: noop,
     templateDefault: noop,
     onChange: noop,
-    onValidate: noop
+    onValidate: noop,
+    onInit: noop
   };
 
   get length() {
@@ -99,9 +104,9 @@ export default class ReactInteractiveList extends Component {
 
   constructor(inProps) {
     super(inProps);
-    this.state = {
-      value: inProps.items
-    };
+    const { items } = inProps;
+    this.state = { value: items };
+    this.onInit({ items, notify });
   }
 
   shouldComponentUpdate(inProps) {
@@ -131,6 +136,11 @@ export default class ReactInteractiveList extends Component {
       this.length === min && onValidate({ target: { value: 'EQ_MIN' } });
       this.length === max && onValidate({ target: { value: 'EQ_MAX' } });
     });
+  };
+
+  notify = () => {
+    const { value } = this.state;
+    this.doChange(value);
   };
 
   render() {
