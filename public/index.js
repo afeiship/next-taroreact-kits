@@ -13,8 +13,12 @@ class App extends React.Component {
       this.templateDefault()
     ]
   };
+
+  handleInit = ({ notify }) => {
+    this.notify = notify;
+  };
+
   template = ({ item, index, items, change }, cb) => {
-    console.log('items: ->', items);
     return (
       <div className="is-item py-2" key={index}>
         {index + 1}:
@@ -24,7 +28,7 @@ class App extends React.Component {
           checked={item.checked}
           onChange={(e) => {
             items[index].checked = e.target.checked;
-            change(items);
+            this.notify();
           }}
         />
         <input
@@ -32,8 +36,7 @@ class App extends React.Component {
           value={item.value}
           onChange={(e) => {
             item.value = e.target.value;
-            console.log('index/value:', index, e.target.value, items);
-            change(items);
+            this.notify();
           }}
         />
         <button className="button is-small is-danger" onClick={cb}>
@@ -57,7 +60,8 @@ class App extends React.Component {
 
   onChange = (inEvent) => {
     const items = inEvent.target.value;
-    this.setState({ items: items });
+    this.setState({ items });
+    console.log('changed:', items);
   };
 
   onValidate = (inEvent) => {
@@ -87,6 +91,7 @@ class App extends React.Component {
           templateCreate={this.templateCreate}
           onChange={this.onChange}
           onValidate={this.onValidate}
+          onInit={this.handleInit}
         />
       </ReactDemokit>
     );

@@ -104,9 +104,9 @@ export default class ReactInteractiveList extends Component {
 
   constructor(inProps) {
     super(inProps);
-    const { items } = inProps;
+    const { items, onInit } = inProps;
     this.state = { value: items };
-    this.onInit({ items, notify });
+    onInit({ items, notify: this.notify });
   }
 
   shouldComponentUpdate(inProps) {
@@ -155,6 +155,7 @@ export default class ReactInteractiveList extends Component {
       templateDefault,
       onChange,
       onValidate,
+      onInit,
       ...props
     } = this.props;
     return (
