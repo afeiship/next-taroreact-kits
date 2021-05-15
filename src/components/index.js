@@ -23,6 +23,10 @@ export default class ReactInteractiveList extends Component {
      */
     max: PropTypes.number,
     /**
+     * If node name is React.Framgment.
+     */
+    virtual: PropTypes.bool,
+    /**
      * The data source.
      */
     items: PropTypes.array,
@@ -75,8 +79,11 @@ export default class ReactInteractiveList extends Component {
   }
 
   get listView() {
+    const { virtual } = this.props;
     const { value } = this.state;
-    return <ReactList items={value} template={this.template} />;
+    return (
+      <ReactList virtual={virtual} items={value} template={this.template} />
+    );
   }
 
   get createView() {
@@ -131,6 +138,7 @@ export default class ReactInteractiveList extends Component {
       className,
       min,
       max,
+      virtual,
       items,
       template,
       templateCreate,

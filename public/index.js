@@ -80,6 +80,7 @@ class App extends React.Component {
           Set Random Items
         </button>
         <ReactInteractiveList
+          virtual
           items={items}
           template={this.template}
           templateDefault={this.templateDefault}
