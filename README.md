@@ -24,6 +24,7 @@ npm install -S @jswork/react-interactive-list
 | templateDefault | func   | false    | noop    | The empty create template.            |
 | onChange        | func   | false    | noop    | The change handler.                   |
 | onValidate      | func   | false    | noop    | When trigger max/min boundary.        |
+| onInit          | func   | false    | noop    | When list init loaded.                |
 
 
 ## usage
