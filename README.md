@@ -17,14 +17,12 @@ npm install -S @jswork/react-interactive-list
 | className       | string | false    | -       | The extended className for component. |
 | min             | number | false    | 1       | The minimum size.                     |
 | max             | number | false    | 10      | The max size.                         |
-| virtual         | bool   | false    | -       | If node name is React.Framgment.      |
 | items           | array  | false    | []      | The data source.                      |
 | template        | func   | false    | noop    | The data item template.               |
 | templateCreate  | func   | false    | noop    | The action of `create` component.     |
 | templateDefault | func   | false    | noop    | The empty create template.            |
 | onChange        | func   | false    | noop    | The change handler.                   |
 | onValidate      | func   | false    | noop    | When trigger max/min boundary.        |
-| onInit          | func   | false    | noop    | When list init loaded.                |
 
 
 ## usage
@@ -56,10 +54,6 @@ npm install -S @jswork/react-interactive-list
       ]
     };
 
-    handleInit = ({ notify }) => {
-      this.notify = notify;
-    };
-
     template = ({ item, index, items, change }, cb) => {
       return (
         <div className="is-item py-2" key={index}>
@@ -70,7 +64,7 @@ npm install -S @jswork/react-interactive-list
             checked={item.checked}
             onChange={(e) => {
               items[index].checked = e.target.checked;
-              this.notify();
+              this.list.notify();
             }}
           />
           <input
@@ -78,7 +72,7 @@ npm install -S @jswork/react-interactive-list
             value={item.value}
             onChange={(e) => {
               item.value = e.target.value;
-              this.notify();
+              this.list.notify();
             }}
           />
           <button className="button is-small is-danger" onClick={cb}>
@@ -88,7 +82,7 @@ npm install -S @jswork/react-interactive-list
       );
     };
 
-    templateCreate = ({ items }, cb) => {
+    templateCreate = (_, cb) => {
       return (
         <button className="button is-info is-fullwidth" onClick={cb}>
           Add
@@ -133,7 +127,7 @@ npm install -S @jswork/react-interactive-list
             templateCreate={this.templateCreate}
             onChange={this.onChange}
             onValidate={this.onValidate}
-            onInit={this.handleInit}
+            ref={(list) => (this.list = list)}
           />
         </ReactDemokit>
       );
