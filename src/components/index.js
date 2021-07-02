@@ -23,10 +23,6 @@ export default class ReactInteractiveList extends Component {
      */
     max: PropTypes.number,
     /**
-     * If node name is React.Framgment.
-     */
-    virtual: PropTypes.bool,
-    /**
      * The data source.
      */
     items: PropTypes.array,
@@ -49,11 +45,7 @@ export default class ReactInteractiveList extends Component {
     /**
      * When trigger max/min boundary.
      */
-    onValidate: PropTypes.func,
-    /**
-     * When list init loaded.
-     */
-    onInit: PropTypes.func
+    onValidate: PropTypes.func
   };
 
   static defaultProps = {
@@ -64,8 +56,7 @@ export default class ReactInteractiveList extends Component {
     templateCreate: noop,
     templateDefault: noop,
     onChange: noop,
-    onValidate: noop,
-    onInit: noop
+    onValidate: noop
   };
 
   get length() {
@@ -84,11 +75,8 @@ export default class ReactInteractiveList extends Component {
   }
 
   get listView() {
-    const { virtual } = this.props;
     const { value } = this.state;
-    return (
-      <ReactList virtual={virtual} items={value} template={this.template} />
-    );
+    return <ReactList virtual items={value} template={this.template} />;
   }
 
   get createView() {
@@ -97,16 +85,15 @@ export default class ReactInteractiveList extends Component {
     const cb = () => {
       if (this.isGteMax) return;
       value.push(templateDefault());
-      this.doChange(value);
+      this.handleChange(value);
     };
-    return templateCreate({ items: value, change: this.doChange }, cb);
+    return templateCreate({ items: value }, cb);
   }
 
   constructor(inProps) {
     super(inProps);
-    const { items, onInit } = inProps;
+    const { items } = inProps;
     this.state = { value: items };
-    onInit({ items, notify: this.notify });
   }
 
   shouldComponentUpdate(inProps) {
@@ -123,12 +110,12 @@ export default class ReactInteractiveList extends Component {
     const cb = () => {
       if (this.isLteMin) return;
       value.splice(index, 1);
-      this.doChange(value);
+      this.handleChange(value);
     };
-    return template({ item, index, change: this.doChange, items: value }, cb);
+    return template({ item, index, items: value }, cb);
   };
 
-  doChange = (inValue) => {
+  handleChange = (inValue) => {
     const { onChange, onValidate, min, max } = this.props;
     const target = { value: inValue };
     this.setState(target, () => {
@@ -140,7 +127,7 @@ export default class ReactInteractiveList extends Component {
 
   notify = () => {
     const { value } = this.state;
-    this.doChange(value);
+    this.handleChange(value);
   };
 
   render() {
@@ -148,16 +135,15 @@ export default class ReactInteractiveList extends Component {
       className,
       min,
       max,
-      virtual,
       items,
       template,
       templateCreate,
       templateDefault,
       onChange,
       onValidate,
-      onInit,
       ...props
     } = this.props;
+
     return (
       <div
         data-component={CLASS_NAME}
