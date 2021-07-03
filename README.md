@@ -22,7 +22,7 @@ npm install -S @jswork/react-interactive-list
 | templateCreate  | func   | false    | noop    | The action of `create` component.     |
 | templateDefault | func   | false    | noop    | The empty create template.            |
 | onChange        | func   | false    | noop    | The change handler.                   |
-| onValidate      | func   | false    | noop    | When trigger max/min boundary.        |
+| onError         | func   | false    | noop    | When trigger max/min boundary.        |
 
 
 ## usage
@@ -64,7 +64,6 @@ npm install -S @jswork/react-interactive-list
             checked={item.checked}
             onChange={(e) => {
               items[index].checked = e.target.checked;
-              this.list.notify();
             }}
           />
           <input
@@ -72,7 +71,6 @@ npm install -S @jswork/react-interactive-list
             value={item.value}
             onChange={(e) => {
               item.value = e.target.value;
-              this.list.notify();
             }}
           />
           <button className="button is-small is-danger" onClick={cb}>
@@ -100,13 +98,17 @@ npm install -S @jswork/react-interactive-list
       console.log('changed:', items);
     };
 
-    onValidate = (inEvent) => {
-      console.log('validate:', inEvent.target.value);
+    onError = (inEvent) => {
+      // console.log('validate:', inEvent.target.value);
     };
 
     onClickRadom = (inEvent) => {
       const random = Math.floor(Math.random() * 8);
-      this.setState({ items: [1, 2, 3, 4, 5, 6, 7, 8].slice(0, random) });
+      this.setState({
+        items: [1, 2, 3, 4, 5, 6, 7, 8]
+          .slice(0, random)
+          .map((item) => this.templateDefault())
+      });
     };
     render() {
       const { items } = this.state;
@@ -120,14 +122,12 @@ npm install -S @jswork/react-interactive-list
             Set Random Items
           </button>
           <ReactInteractiveList
-            virtual
             items={items}
             template={this.template}
             templateDefault={this.templateDefault}
             templateCreate={this.templateCreate}
             onChange={this.onChange}
-            onValidate={this.onValidate}
-            ref={(list) => (this.list = list)}
+            onError={this.onError}
           />
         </ReactDemokit>
       );
