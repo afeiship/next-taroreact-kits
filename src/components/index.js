@@ -3,6 +3,8 @@ import ReactList from '@jswork/react-list';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import NxActiveState from '@jswork/next-active-state';
+import nxDebounce from '@jswork/next-debounce';
 
 const CLASS_NAME = 'react-interactive-list';
 
@@ -45,7 +47,7 @@ export default class ReactInteractiveList extends Component {
     /**
      * When trigger max/min boundary.
      */
-    onValidate: PropTypes.func
+    onError: PropTypes.func
   };
 
   static defaultProps = {
@@ -56,12 +58,11 @@ export default class ReactInteractiveList extends Component {
     templateCreate: noop,
     templateDefault: noop,
     onChange: noop,
-    onValidate: noop
+    onError: noop
   };
 
   get length() {
-    const { value } = this.state;
-    return value.length;
+    return this.activeState.length;
   }
 
   get isLteMin() {
@@ -75,59 +76,59 @@ export default class ReactInteractiveList extends Component {
   }
 
   get listView() {
-    const { value } = this.state;
-    return <ReactList virtual items={value} template={this.template} />;
+    return (
+      <ReactList virtual items={this.activeState} template={this.template} />
+    );
   }
 
   get createView() {
-    const { value } = this.state;
     const { templateCreate, templateDefault } = this.props;
     const cb = () => {
       if (this.isGteMax) return;
-      value.push(templateDefault());
-      this.handleChange(value);
+      this.activeState.push(templateDefault());
     };
-    return templateCreate({ items: value }, cb);
+    return templateCreate({ items: this.activeState }, cb);
   }
 
   constructor(inProps) {
     super(inProps);
     const { items } = inProps;
-    this.state = { value: items };
+    this.initialState(items);
   }
+
+  initialState = (inItems) => {
+    const instance = new NxActiveState(inItems);
+    const handler = nxDebounce(() => this.handleChange(inItems), { delay: 0 });
+    this.activeState = instance.state;
+    this.stateRes = instance.one('change', handler);
+  };
 
   shouldComponentUpdate(inProps) {
     const { items } = inProps;
-    if (items !== this.state.value) {
-      this.setState({ value: items });
+    if (items !== this.activeState) {
+      this.initialState(items);
     }
     return true;
   }
 
+  componentWillUnmount() {
+    this.stateRes.destroy();
+  }
+
   template = ({ item, index }) => {
     const { template } = this.props;
-    const { value } = this.state;
     const cb = () => {
       if (this.isLteMin) return;
-      value.splice(index, 1);
-      this.handleChange(value);
+      this.activeState.splice(index, 1);
     };
-    return template({ item, index, items: value }, cb);
+    return template({ item, index, items: this.activeState }, cb);
   };
 
-  handleChange = (inValue) => {
-    const { onChange, onValidate, min, max } = this.props;
-    const target = { value: inValue };
-    this.setState(target, () => {
-      onChange({ target });
-      this.length === min && onValidate({ target: { value: 'EQ_MIN' } });
-      this.length === max && onValidate({ target: { value: 'EQ_MAX' } });
-    });
-  };
-
-  notify = () => {
-    const { value } = this.state;
-    this.handleChange(value);
+  handleChange = () => {
+    const { onChange, onError, min, max } = this.props;
+    onChange({ target: { value: this.activeState } });
+    this.length === min && onError({ target: { value: 'EQ_MIN' } });
+    this.length === max && onError({ target: { value: 'EQ_MAX' } });
   };
 
   render() {
@@ -140,7 +141,7 @@ export default class ReactInteractiveList extends Component {
       templateCreate,
       templateDefault,
       onChange,
-      onValidate,
+      onError,
       ...props
     } = this.props;
 
