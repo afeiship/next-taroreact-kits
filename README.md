@@ -54,7 +54,7 @@ npm install -S @jswork/react-interactive-list
       ]
     };
 
-    template = ({ item, index, items, change }, cb) => {
+    template = ({ item, index, items }, cb) => {
       return (
         <div className="is-item py-2" key={index}>
           {index + 1}:
@@ -64,6 +64,7 @@ npm install -S @jswork/react-interactive-list
             checked={item.checked}
             onChange={(e) => {
               items[index].checked = e.target.checked;
+              this.list.notify();
             }}
           />
           <input
@@ -71,6 +72,7 @@ npm install -S @jswork/react-interactive-list
             value={item.value}
             onChange={(e) => {
               item.value = e.target.value;
+              this.list.notify();
             }}
           />
           <button className="button is-small is-danger" onClick={cb}>
@@ -128,6 +130,7 @@ npm install -S @jswork/react-interactive-list
             templateCreate={this.templateCreate}
             onChange={this.onChange}
             onError={this.onError}
+            ref={(list) => (this.list = list)}
           />
         </ReactDemokit>
       );
