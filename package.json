@@ -80,9 +80,6 @@
     "prop-types": "^15.7.2"
   },
   "dependencies": {
-    "@jswork/next": "^1.0.6",
-    "@jswork/next-active-state": "^1.0.3",
-    "@jswork/next-debounce": "^1.0.0",
     "@jswork/noop": "^1.0.0",
     "@jswork/react-list": "^1.0.0",
     "classnames": "^2.2.6"

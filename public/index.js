@@ -14,7 +14,7 @@ class App extends React.Component {
     ]
   };
 
-  template = ({ item, index, items, change }, cb) => {
+  template = ({ item, index, items }, cb) => {
     return (
       <div className="is-item py-2" key={index}>
         {index + 1}:
@@ -24,6 +24,7 @@ class App extends React.Component {
           checked={item.checked}
           onChange={(e) => {
             items[index].checked = e.target.checked;
+            this.list.notify();
           }}
         />
         <input
@@ -31,6 +32,7 @@ class App extends React.Component {
           value={item.value}
           onChange={(e) => {
             item.value = e.target.value;
+            this.list.notify();
           }}
         />
         <button className="button is-small is-danger" onClick={cb}>
@@ -88,6 +90,7 @@ class App extends React.Component {
           templateCreate={this.templateCreate}
           onChange={this.onChange}
           onError={this.onError}
+          ref={(list) => (this.list = list)}
         />
       </ReactDemokit>
     );
