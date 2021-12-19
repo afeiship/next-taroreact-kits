@@ -59,27 +59,27 @@ export default class ReactInteractiveList extends Component {
     onError: noop
   };
 
-  get length() {
+  get length () {
     const { value } = this.state;
     return value.length;
   }
 
-  get isLteMin() {
+  get isLteMin () {
     const { min } = this.props;
     return this.length <= min;
   }
 
-  get isGteMax() {
+  get isGteMax () {
     const { max } = this.props;
     return this.length >= max;
   }
 
-  get listView() {
+  get listView () {
     const { value } = this.state;
-    return <ReactList virtual items={value} template={this.template} />;
+    return <ReactList items={value} template={this.template} />;
   }
 
-  get createView() {
+  get createView () {
     const { value } = this.state;
     const { templateCreate, templateDefault } = this.props;
     const cb = () => {
@@ -90,13 +90,13 @@ export default class ReactInteractiveList extends Component {
     return templateCreate({ items: value }, cb);
   }
 
-  constructor(inProps) {
+  constructor (inProps) {
     super(inProps);
     const { items } = inProps;
     this.state = { value: items };
   }
 
-  shouldComponentUpdate(inProps) {
+  shouldComponentUpdate (inProps) {
     const { items } = inProps;
     if (items !== this.state.value) {
       this.setState({ value: items });
@@ -130,7 +130,7 @@ export default class ReactInteractiveList extends Component {
     this.handleChange(value);
   };
 
-  render() {
+  render () {
     const {
       className,
       min,
