@@ -1,6 +1,6 @@
 import ReactDemokit from '@jswork/react-demokit';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import ReactInteractiveList from '../src/main';
 import './assets/style.scss';
 
@@ -14,7 +14,7 @@ class App extends React.Component {
     ]
   };
 
-  template = ({ item, index, items }, cb) => {
+  template = ({item, index, items}, cb) => {
     return (
       <div className="is-item py-2" key={index}>
         {index + 1}:
@@ -51,12 +51,12 @@ class App extends React.Component {
   };
 
   templateDefault() {
-    return { checked: false, value: 'A new template' };
+    return {checked: false, value: 'A new template'};
   }
 
   onChange = (inEvent) => {
     const items = inEvent.target.value;
-    this.setState({ items });
+    this.setState({items});
     console.log('changed:', items);
   };
 
@@ -64,7 +64,8 @@ class App extends React.Component {
     // console.log('validate:', inEvent.target.value);
   };
 
-  onClickRadom = (inEvent) => {
+  onClickRandom = (inEvent) => {
+    console.log('this.listRef:', this.listRef);
     const random = Math.floor(Math.random() * 8);
     this.setState({
       items: [1, 2, 3, 4, 5, 6, 7, 8]
@@ -72,15 +73,16 @@ class App extends React.Component {
         .map((item) => this.templateDefault())
     });
   };
+
   render() {
-    const { items } = this.state;
+    const {items} = this.state;
     return (
       <ReactDemokit
         className="p-3 app-container"
         url="https://github.com/afeiship/react-interactive-list">
         <button
           className="button is-primary is-fullwidth mb-2"
-          onClick={this.onClickRadom}>
+          onClick={this.onClickRandom}>
           Set Random Items
         </button>
         <ReactInteractiveList
@@ -91,10 +93,11 @@ class App extends React.Component {
           onChange={this.onChange}
           onError={this.onError}
           ref={(list) => (this.list = list)}
+          forwardedRef={(ref) => (this.listRef = ref)}
         />
       </ReactDemokit>
     );
   }
 }
 
-ReactDOM.render(<App />, document.getElementById('app'));
+ReactDOM.createRoot(document.getElementById('app')).render(<App/>);
