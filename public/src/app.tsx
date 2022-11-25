@@ -1,10 +1,36 @@
-import ReactDemokit from '@jswork/react-demokit';
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import ReactInteractiveList from '../src/main';
-import './assets/style.scss';
+import ReactInteractiveList from '../../src/main';
+import styled from 'styled-components';
 
-class App extends React.Component {
+const Container = styled.div`
+  .react-list {
+    padding: 20px;
+    background: #fefefe;
+    border: 4px dashed #ccc;
+    margin-bottom: 20px;
+
+    &:hover {
+      border-color: #ddd;
+    }
+  }
+
+  .is-item {
+    padding: 0 10px;
+    line-height: 32px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &:hover {
+      background: #eee;
+    }
+  }
+`;
+
+export default class App extends React.Component {
+  private list: any;
+  private listRef: any;
   state = {
     items: [
       this.templateDefault(),
@@ -14,7 +40,7 @@ class App extends React.Component {
     ]
   };
 
-  template = ({item, index, items}, cb) => {
+  template = ({ item, index, items }, cb) => {
     return (
       <div className="is-item py-2" key={index}>
         {index + 1}:
@@ -23,6 +49,7 @@ class App extends React.Component {
           type="checkbox"
           checked={item.checked}
           onChange={(e) => {
+            console.log(this.list);
             items[index].checked = e.target.checked;
             this.list.notify();
           }}
@@ -51,38 +78,32 @@ class App extends React.Component {
   };
 
   templateDefault() {
-    return {checked: false, value: 'A new template'};
+    return { checked: false, value: 'A new template' };
   }
 
   onChange = (inEvent) => {
     const items = inEvent.target.value;
-    this.setState({items});
+    this.setState({ items });
     console.log('changed:', items);
   };
 
-  onError = (inEvent) => {
+  onError = () => {
     // console.log('validate:', inEvent.target.value);
   };
 
-  onClickRandom = (inEvent) => {
+  onClickRandom = () => {
     console.log('this.listRef:', this.listRef);
     const random = Math.floor(Math.random() * 8);
     this.setState({
-      items: [1, 2, 3, 4, 5, 6, 7, 8]
-        .slice(0, random)
-        .map((item) => this.templateDefault())
+      items: [1, 2, 3, 4, 5, 6, 7, 8].slice(0, random).map(() => this.templateDefault())
     });
   };
 
   render() {
-    const {items} = this.state;
+    const { items } = this.state;
     return (
-      <ReactDemokit
-        className="p-3 app-container"
-        url="https://github.com/afeiship/react-interactive-list">
-        <button
-          className="button is-primary is-fullwidth mb-2"
-          onClick={this.onClickRandom}>
+      <Container className="p-3 app-container">
+        <button className="button is-primary is-fullwidth mb-2" onClick={this.onClickRandom}>
           Set Random Items
         </button>
         <ReactInteractiveList
@@ -92,12 +113,12 @@ class App extends React.Component {
           templateCreate={this.templateCreate}
           onChange={this.onChange}
           onError={this.onError}
-          ref={(list) => (this.list = list)}
+          ref={(list) => {
+            this.list = list;
+          }}
           forwardedRef={(ref) => (this.listRef = ref)}
         />
-      </ReactDemokit>
+      </Container>
     );
   }
 }
-
-ReactDOM.createRoot(document.getElementById('app')).render(<App/>);
