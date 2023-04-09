@@ -97,7 +97,8 @@ export default class App extends React.Component {
   };
 
   onClickRandom = () => {
-    console.log('this.listRef:', this.listRef);
+    console.log('this.list: ', this.list, this.list2);
+    console.log('this.listRef:', this.listRef, this.listRef2);
     const random = Math.floor(Math.random() * 8);
     this.setState({
       items: [1, 2, 3, 4, 5, 6, 7, 8].slice(0, random).map(() => this.templateDefault())

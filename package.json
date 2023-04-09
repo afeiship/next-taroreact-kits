@@ -1,7 +1,7 @@
 {
   "name": "@jswork/react-interactive-list",
   "homepage": "https://js.work",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "An interactive, dynamic list of components with add / remove actions.",
   "license": "MIT",
   "main": "dist/index.js",
@@ -64,6 +64,7 @@
     "style-loader": "^2.0.0",
     "styled-components": "^5.3.0",
     "ts-jest": "^27.1.1",
+    "tslib": "^2.5.0",
     "typescript": "^4.9.5",
     "vite": "^2.3.4",
     "vite-plugin-pwa": "^0.7.3"
@@ -76,5 +77,10 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"
-  }
+  },
+  "keywords": [
+    "react",
+    "interactive",
+    "list"
+  ]
 }
