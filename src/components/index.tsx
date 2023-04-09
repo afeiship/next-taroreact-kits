@@ -135,8 +135,8 @@ class ReactInteractiveList extends Component<ReactInteractiveListProps, ReactInt
     const target = { value: inValue };
     this.setState(target, () => {
       onChange({ target });
-      this.length === min && onError({ target: { value: 'EQ_MIN' } });
-      this.length === max && onError({ target: { value: 'EQ_MAX' } });
+      this.length < min && onError({ target: { value: 'EQ_MIN' } });
+      this.length > max && onError({ target: { value: 'EQ_MAX' } });
     });
   };
 
