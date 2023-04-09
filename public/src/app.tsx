@@ -2,6 +2,8 @@ import React from 'react';
 import ReactInteractiveList from '../../src/main';
 import styled from 'styled-components';
 
+window['ss'] = ReactInteractiveList;
+
 const Container = styled.div`
   .react-list {
     padding: 20px;
@@ -30,14 +32,12 @@ const Container = styled.div`
 
 export default class App extends React.Component {
   private list: any;
+  private list2: any;
   private listRef: any;
+  private listRef2: any;
   state = {
-    items: [
-      this.templateDefault(),
-      this.templateDefault(),
-      this.templateDefault(),
-      this.templateDefault()
-    ]
+    items: [this.templateDefault()],
+    items2: [this.templateDefault()]
   };
 
   template = ({ item, index, items }, cb) => {
@@ -81,10 +81,15 @@ export default class App extends React.Component {
     return { checked: false, value: 'A new template' };
   }
 
-  onChange = (inEvent) => {
+  onChange1 = (inEvent) => {
     const items = inEvent.target.value;
     this.setState({ items });
     console.log('changed:', items);
+  };
+
+  onChange2 = (inEvent) => {
+    const items2 = inEvent.target.value;
+    this.setState({ items2 });
   };
 
   onError = () => {
@@ -100,7 +105,7 @@ export default class App extends React.Component {
   };
 
   render() {
-    const { items } = this.state;
+    const { items, items2 } = this.state;
     return (
       <Container className="p-3 app-container">
         <button className="button is-primary is-fullwidth mb-2" onClick={this.onClickRandom}>
@@ -111,12 +116,25 @@ export default class App extends React.Component {
           template={this.template}
           templateDefault={this.templateDefault}
           templateCreate={this.templateCreate}
-          onChange={this.onChange}
+          onChange={this.onChange1}
           onError={this.onError}
           ref={(list) => {
             this.list = list;
           }}
           forwardedRef={(ref) => (this.listRef = ref)}
+        />
+
+        <ReactInteractiveList
+          items={items2}
+          template={this.template}
+          templateDefault={this.templateDefault}
+          templateCreate={this.templateCreate}
+          onChange={this.onChange2}
+          onError={this.onError}
+          ref={(list) => {
+            this.list2 = list;
+          }}
+          forwardedRef={(ref) => (this.listRef2 = ref)}
         />
       </Container>
     );

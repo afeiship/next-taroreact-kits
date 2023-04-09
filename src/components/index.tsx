@@ -55,10 +55,14 @@ export type ReactInteractiveListProps = {
   forwardedRef: any;
 } & HTMLAttributes<any>;
 
-class ReactInteractiveList extends Component<ReactInteractiveListProps> {
+interface ReactInteractiveListState {
+  value: any[];
+}
+
+class ReactInteractiveList extends Component<ReactInteractiveListProps, ReactInteractiveListState> {
   static displayName = CLASS_NAME;
   static defaultProps = {
-    min: 1,
+    min: 0,
     max: 10,
     items: [],
     template: noop,
@@ -66,10 +70,6 @@ class ReactInteractiveList extends Component<ReactInteractiveListProps> {
     templateDefault: noop,
     onChange: noop,
     onError: noop
-  };
-
-  state = {
-    value: this.props.items
   };
 
   get length() {
@@ -106,13 +106,15 @@ class ReactInteractiveList extends Component<ReactInteractiveListProps> {
   constructor(inProps) {
     super(inProps);
     const { items } = inProps;
-    this.state = { value: items };
+    this.state = { value: [...items] };
   }
 
   shouldComponentUpdate(inProps) {
     const { items } = inProps;
-    if (items !== this.state.value) {
-      this.setState({ value: items });
+    const oldValue = JSON.stringify(this.props.items);
+    const newValue = JSON.stringify(items);
+    if (oldValue !== newValue) {
+      this.setState({ value: [...items] });
     }
     return true;
   }
