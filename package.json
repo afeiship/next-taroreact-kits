@@ -1,7 +1,7 @@
 {
   "name": "@jswork/react-interactive-list",
   "homepage": "https://js.work",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "An interactive, dynamic list of components with add / remove actions.",
   "license": "MIT",
   "main": "dist/index.js",
