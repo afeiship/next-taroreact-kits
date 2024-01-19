@@ -1,12 +1,9 @@
 // https://jestjs.io/docs/en/configuration
 module.exports = {
   verbose: true,
-  testRegex: [/\.spec.tsx/],
-  testEnvironment: 'jsdom',
-  transform: {
-    '^.+\\.tsx?$': 'ts-jest'
-  },
+  testRegex: [/\.spec.js/],
   //preset: "jest-puppeteer",
+  automock: false,
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1'
   }
