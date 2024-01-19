@@ -61,23 +61,14 @@
     "@jswork/next-try-set": "^1.0.1",
     "@jswork/next-weapp-storage": "^1.0.7",
     "@jswork/pipe": "^1.0.4",
-    "@jswork/taro-envs": "^1.0.5"
+    "@jswork/taro-envs": "^1.0.6"
   },
   "babel": {
-    "presets": [
-      [
-        "@babel/preset-env"
-      ]
-    ]
+    "presets": [["@babel/preset-env"]]
   },
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"
   },
-  "keywords": [
-    "react",
-    "next",
-    "taro",
-    "toolkit"
-  ]
+  "keywords": ["react", "next", "taro", "toolkit"]
 }
