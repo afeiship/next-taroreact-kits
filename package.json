@@ -1,6 +1,6 @@
 {
   "name": "@jswork/next-taroreact-kits",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Taro react kits based on next.",
   "homepage": "https://js.work",
   "author": {
@@ -64,11 +64,20 @@
     "@jswork/taro-envs": "^1.0.6"
   },
   "babel": {
-    "presets": [["@babel/preset-env"]]
+    "presets": [
+      [
+        "@babel/preset-env"
+      ]
+    ]
   },
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"
   },
-  "keywords": ["react", "next", "taro", "toolkit"]
+  "keywords": [
+    "react",
+    "next",
+    "taro",
+    "toolkit"
+  ]
 }
