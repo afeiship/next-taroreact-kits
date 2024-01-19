@@ -5,7 +5,7 @@ interface Options {
 }
 
 interface NxStatic {
-  NxTaroreactKits: {
+  TaroreactKits: {
     create(options?: Options): any;
   };
 }
