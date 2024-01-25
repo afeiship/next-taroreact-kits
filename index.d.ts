@@ -5,6 +5,10 @@ interface Options {
 }
 
 interface NxStatic {
+  $local: import('@jswork/next-abstract-storage');
+  $event: import('@jswork/event-mitt').EventMitt;
+  $page: (key?: string) => any;
+  $global: any;
   TaroreactKits: {
     create(options?: Options): any;
   };
