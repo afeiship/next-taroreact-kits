@@ -1,6 +1,7 @@
 import nx from '@jswork/next';
 import EventMitt from '@jswork/event-mitt';
 import pipe from '@jswork/pipe';
+import Taro from '@tarojs/taro';
 
 // classes
 import '@jswork/next-weapp-storage';
@@ -36,7 +37,11 @@ const defaults = { prefix: 'nuk', queryInterceptors: [nx.stubValue], initialData
 const NxTaroreactKits = nx.declare('nx.TaroreactKits', {
   statics: {
     init: function() {
-      nx.sets({ $event: nx.mix(null, EventMitt) });
+      nx.sets({
+        $event: nx.mix(null, EventMitt),
+        $nav: Taro.navigateTo,
+        $switchTab: Taro.switchTab,
+      });
     },
     create: function(inOptions) {
       return new this(inOptions);
